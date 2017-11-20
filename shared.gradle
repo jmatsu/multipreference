@@ -1,0 +1,10 @@
+class Config {
+    def compileSdkVersion = 27
+    def buildToolsVersion = '27.0.0'
+    def minSdkVersion = 16
+    def targetSdkVersion = 22
+}
+
+ext {
+    config = new Config()
+}

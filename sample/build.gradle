@@ -1,0 +1,46 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+
+android {
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        applicationId "com.fatdaruma.multipreference"
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        debug {
+            matchingFallbacks = ['release']
+        }
+        release {
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_6
+        targetCompatibility JavaVersion.VERSION_1_6
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+
+    implementation project(":library")
+    annotationProcessor project(":processor")
+
+    testImplementation "org.jetbrains.spek:spek-api:$spekVersion"
+    testImplementation "org.jetbrains.spek:spek-junit-platform-engine:$spekVersion"
+    testImplementation "org.junit.platform:junit-platform-runner:$spekRunnerVersion"
+    testImplementation "junit:junit:$junitVersion"
+    testImplementation "org.amshove.kluent:kluent:$kluentVersion"
+}

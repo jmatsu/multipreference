@@ -1,0 +1,35 @@
+class ArtifactConfiguration {
+    def user = 'jmatsu'
+    def groupId = 'com.github.jmatsu'
+    def libraryArtifactId = 'multipreference'
+    def processorArtifactId = 'multipreference-processor'
+    def description = 'APT library for managing android\'s SharedPreference'
+    def websiteUrl = 'https://github.com/jmatsu/multi-preference'
+    def licenses = ['Apache-2.0']
+}
+
+ext {
+    // configuration
+    artifactConfig = new ArtifactConfiguration()
+
+    // dependencies
+
+    // shared
+    kotlinVersion = '1.1.51'
+    bintrayPluginVersion = '0.5.0'
+
+    supportLibraryVersion = '26.1.0'
+
+    // processor
+    javapoetVersion = '1.9.0'
+    guavaVersion = '23.4-jre'
+    androidVersion = '4.1.1.4'
+    funktionaleVersion = '1.1'
+
+    // test
+    spekVersion = '1.1.5'
+    spekRunnerVersion = '1.0.0'
+    robolectricVersion = '3.5.1'
+    kluentVersion = '1.30'
+    junitVersion = '4.12'
+}
