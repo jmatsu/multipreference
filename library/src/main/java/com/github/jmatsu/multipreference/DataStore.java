@@ -189,7 +189,7 @@ public interface DataStore {
     /**
      * Finish the current transaction successfully
      *
-     * @param commit whether do use {@link SharedPreferences.Editor#commit()} or not
+     * @param commit whether do use SharedPreferences.Editor#commit() or not
      * @return committed or applied successfully.
      */
     boolean finishTransaction(boolean commit);

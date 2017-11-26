@@ -26,6 +26,4 @@ ext {
     } else {
         releaseVersionCandidate = "0.1" + "-" + gitSha
     }
-
-    println(releaseVersionCandidate)
 }

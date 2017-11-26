@@ -4,6 +4,11 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+repositories {
+    maven {
+        url  "https://dl.bintray.com/jmatsu/maven"
+    }
+}
 
 android {
     compileSdkVersion config.compileSdkVersion
@@ -35,8 +40,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
     implementation 'com.android.support:appcompat-v7:26.1.0'
 
-    implementation project(":library")
-    annotationProcessor project(":processor")
+    implementation "com.github.jmatsu:multipreference:$useVersion"
+    annotationProcessor "com.github.jmatsu:multipreference-processor:$useVersion"
 
     testImplementation "org.jetbrains.spek:spek-api:$spekVersion"
     testImplementation "org.jetbrains.spek:spek-junit-platform-engine:$spekVersion"

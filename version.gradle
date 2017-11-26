@@ -19,4 +19,7 @@ ext {
     robolectricVersion = '3.5.1'
     kluentVersion = '1.30'
     junitVersion = '4.12'
+
+    // sample
+    useVersion = "0.1-test"
 }
