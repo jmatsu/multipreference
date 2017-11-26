@@ -1,17 +1,4 @@
-class ArtifactConfiguration {
-    def user = 'jmatsu'
-    def groupId = 'com.github.jmatsu'
-    def libraryArtifactId = 'multipreference'
-    def processorArtifactId = 'multipreference-processor'
-    def description = 'APT library for managing android\'s SharedPreference'
-    def websiteUrl = 'https://github.com/jmatsu/multi-preference'
-    def licenses = ['Apache-2.0']
-}
-
 ext {
-    // configuration
-    artifactConfig = new ArtifactConfiguration()
-
     // dependencies
 
     // shared
