@@ -48,14 +48,14 @@ You can see more examples in *sample* module's source and testcases.
 
 Especially for flavor-based configurations, you can check from:
 
-- https://github.com/jmatsu/multipreference/tree/master/sample/src/release/java/com/github/jmatsu/multipreference/sample/FlavorBasedConfig.java
-- https://github.com/jmatsu/multipreference/tree/master/sample/src/release/java/com/github/jmatsu/multipreference/sample/DebugConfig.java
-- https://github.com/jmatsu/multipreference/tree/master/sample/src/debug/java/com/github/jmatsu/multipreference/sample/ReleaseConfig.java
+- [Base configuration](https://github.com/jmatsu/multipreference/tree/master/sample/src/main/java/com/github/jmatsu/multipreference/sample/FlavorBasedConfig.java)
+- [Debug configuration](https://github.com/jmatsu/multipreference/tree/master/sample/src/debug/java/com/github/jmatsu/multipreference/sample/DebugConfig.java) and [release configuration](https://github.com/jmatsu/multipreference/tree/master/sample/src/release/java/com/github/jmatsu/multipreference/sample/ReleaseConfig.java)
+- How to use : [debug](https://github.com/jmatsu/multipreference/blob/master/sample/src/testDebug/java/com/github/jmatsu/multipreference/sample/FlavorBasedConfigSpek.kt) and [release](https://github.com/jmatsu/multipreference/blob/master/sample/src/testRelease/java/com/github/jmatsu/multipreference/sample/FlavorBasedConfigSpek.kt)
 
 
 ## Download
 
-The latest version : [ ![Download](https://api.bintray.com/packages/jmatsu/maven/com.github.jmatsu.multipreference/images/download.svg) ](https://bintray.com/jmatsu/maven/com.github.jmatsu.multipreference/_latestVersion)
+The latest version : [ ![Download](https://api.bintray.com/packages/jmatsu/maven/multipreference/images/download.svg) ](https://bintray.com/jmatsu/maven/multipreference/_latestVersion)
 
 You need to add the following to build.gradle of *android-application* module or *android-library* module.
 
