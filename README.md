@@ -1,6 +1,6 @@
 # Multipreference
 
-[ ![Download](https://api.bintray.com/packages/jmatsu/maven/com.github.jmatsu.multipreference/images/download.svg) ](https://bintray.com/jmatsu/maven/com.github.jmatsu.multipreference/_latestVersion) ![bitrise badge](https://www.bitrise.io/app/fd08ee11f69067f7/status.svg?token=gymkU3UX_7B8exFVM8iR3A&branch=master)
+[ ![Download](https://api.bintray.com/packages/jmatsu/maven/multipreference/images/download.svg) ](https://bintray.com/jmatsu/maven/multipreference/_latestVersion) ![bitrise badge](https://www.bitrise.io/app/fd08ee11f69067f7/status.svg?token=gymkU3UX_7B8exFVM8iR3A&branch=master)
 
 Multipreference provides an annotation-based Key-Value store for Android development. 
 
