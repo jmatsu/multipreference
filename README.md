@@ -60,6 +60,12 @@ The latest version : [ ![Download](https://api.bintray.com/packages/jmatsu/maven
 You need to add the following to build.gradle of *android-application* module or *android-library* module.
 
 ```groovy
+repositories {
+    maven {
+        url  "https://dl.bintray.com/jmatsu/maven" 
+    }
+}
+
 ext.multipreferenceVersion = '[latest_version]'
 
 dependencies {
