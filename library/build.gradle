@@ -48,10 +48,14 @@ dependencies {
 }
 
 publish {
+    def versionFile = new File(rootDir, 'VERSION')
+
     userOrg = artifactConfig.user
     groupId = artifactConfig.groupId
     artifactId = artifactConfig.libraryArtifactId
-    version = new File(rootDir, 'VERSION').text
+
+    version = (versionFile.exists() ? versionFile.text : releaseVersionCandidate).trim()
+    
     desc = artifactConfig.description
     website = artifactConfig.websiteUrl
     licences = artifactConfig.licenses

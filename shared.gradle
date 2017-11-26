@@ -19,4 +19,13 @@ class ArtifactConfiguration {
 ext {
     config = new AndroidConfig()
     artifactConfig = new ArtifactConfiguration()
+    gitSha = "git rev-parse --short HEAD".execute().text
+    def process = "git describe --abbrev=0".execute()
+    if (process.waitFor() == 0) {
+        releaseVersionCandidate = process.text + "-" + gitSha
+    } else {
+        releaseVersionCandidate = "0.1" + "-" + gitSha
+    }
+
+    println(releaseVersionCandidate)
 }
