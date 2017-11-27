@@ -114,7 +114,7 @@ abstract class Key(keyAnnotation: KeyAnnotation, private val element: VariableEl
     abstract fun toSetters(): Array<MethodSpec>
 
     private fun KeyAnnotation.actualKeyValue(element: Element): String =
-            (name.takeUnless { it == KeyAnnotation.DEFAULT_FIELD_NAME } ?: element.name).onStrategy(nameStrategy)
+            (name.takeUnless { it == KeyAnnotation.DEFAULT_NAME } ?: element.name).onStrategy(nameStrategy)
 
     protected fun toGetterCodeOfDataStore(useParameter: Boolean = true): CodeBlock {
         val defaultValue = if (hasParameter and useParameter) parameterName else defaultValue

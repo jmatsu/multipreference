@@ -13,21 +13,21 @@ public @interface Key {
     /**
      * @see Key#name()
      */
-    String DEFAULT_FIELD_NAME = "[field-name]";
+    String DEFAULT_NAME = "[element-name]";
 
     /**
      * If you specify this, the value will be used for a key of a store.
-     * Otherwise, a field name which this annotates will be converted based on {@link Key#nameStrategy()} and will be used for a key of a store.
+     * Otherwise, an element name which this annotates will be converted based on {@link Key#nameStrategy()} and will be used for a key of a store.
      *
-     * @return a name which you want to use or {@link Key#DEFAULT_FIELD_NAME}
+     * @return a name which you want to use or {@link Key#DEFAULT_NAME}
      */
-    String name() default DEFAULT_FIELD_NAME;
+    String name() default DEFAULT_NAME;
 
     @CacheStrategy int cacheStrategy() default NO_CACHE;
 
     /**
-     * Specify a name strategy to convert a field name.
-     * This won't be used unless {@link Key#name()} equals {@link Key#DEFAULT_FIELD_NAME}
+     * Specify a name strategy to convert a key field name.
+     * This won't be used unless {@link Key#name()} equals {@link Key#DEFAULT_NAME}
      *
      * @return see {@link NameStrategy}
      */
