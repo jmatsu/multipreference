@@ -10,10 +10,11 @@ import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.atomic.AtomicReference
+import javax.lang.model.element.Element
 import javax.lang.model.element.VariableElement
 import javax.lang.model.type.TypeKind
 
-class CachedKey(keyAnnotation: KeyAnnotation, element: VariableElement) : Key(keyAnnotation, element) {
+class CachedKey(keyAnnotation: KeyAnnotation, element: Element) : Key(keyAnnotation, element) {
     private val cacheFieldName: String = "${parameterName}Ref"
     private val cacheReference: TypeName = toAtomicReferenceType()
     private val initialValue: Any? = valueType.toNormalizeForAtomicReference(null)

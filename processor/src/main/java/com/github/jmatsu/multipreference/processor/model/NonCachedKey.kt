@@ -6,9 +6,9 @@ import com.github.jmatsu.multipreference.processor.dsl.void
 import com.squareup.javapoet.CodeBlock
 import com.squareup.javapoet.FieldSpec
 import com.squareup.javapoet.MethodSpec
-import javax.lang.model.element.VariableElement
+import javax.lang.model.element.Element
 
-class NonCachedKey(keyAnnotation: KeyAnnotation, element: VariableElement) : Key(keyAnnotation, element) {
+class NonCachedKey(keyAnnotation: KeyAnnotation, element: Element) : Key(keyAnnotation, element) {
     override fun toFields(): Array<FieldSpec> = arrayOf()
 
     override fun toConstructorStatements(): Array<CodeBlock> = arrayOf()
