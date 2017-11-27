@@ -7,7 +7,9 @@ import com.github.jmatsu.multipreference.processor.dsl.private
 import com.github.jmatsu.multipreference.processor.dsl.public
 import com.github.jmatsu.multipreference.processor.elementUtils
 import com.github.jmatsu.multipreference.processor.exception.KeyValidationException
-import com.github.jmatsu.multipreference.processor.extension.*
+import com.github.jmatsu.multipreference.processor.extension.annotation
+import com.github.jmatsu.multipreference.processor.extension.name
+import com.github.jmatsu.multipreference.processor.extension.toLowerCamel
 import com.squareup.javapoet.CodeBlock
 import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.ParameterSpec
@@ -22,8 +24,10 @@ const val dataStoreVariableName: String = "dataStore"
 
 class Preference(annotation: PreferenceAnnotation, private val typeElement: TypeElement) {
     private val className: String = annotation.actualClassValue(typeElement)
-    private val keys: Array<Key> = typeElement.enclosedElements.mapNotNull {
-        (it.annotation<KeyAnnotation>() to it.asVariable()).traverse()?.let { (f, s) -> Key.create(f, s) }
+    private val keys: Array<Key> = typeElement.enclosedElements.mapNotNull { e ->
+        e.annotation<KeyAnnotation>()?.let {
+            Key.create(it, e)
+        }
     }.toTypedArray()
 
     val packageName: String = elementUtils.getPackageOf(typeElement).name

@@ -52,6 +52,7 @@ class PreferenceProcessor : AbstractProcessor() {
                         }
                     } catch (e: Exception) {
                         messager.printMessage(Diagnostic.Kind.ERROR, "While processing ${prefModel.elementName}, ${e.message}")
+                        e.printStackTrace()
                     }
                 }
 

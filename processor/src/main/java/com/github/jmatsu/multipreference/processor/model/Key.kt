@@ -18,13 +18,12 @@ import org.funktionale.either.Either
 import org.funktionale.either.eitherTry
 import javax.lang.model.element.Element
 import javax.lang.model.element.Modifier
-import javax.lang.model.element.VariableElement
 import javax.lang.model.type.TypeKind.*
 import javax.lang.model.type.TypeMirror
 
-abstract class Key(keyAnnotation: KeyAnnotation, private val element: VariableElement) {
+abstract class Key(keyAnnotation: KeyAnnotation, private val element: Element) {
     companion object {
-        fun create(keyAnnotation: KeyAnnotation, element: VariableElement): KeyModel {
+        fun create(keyAnnotation: KeyAnnotation, element: Element): KeyModel {
             val shouldCache = keyAnnotation.cacheStrategy in arrayOf(KeyAnnotation.LAZY_CACHE, KeyAnnotation.IMMEDIATE_CACHE)
 
             if (shouldCache) {
@@ -35,12 +34,12 @@ abstract class Key(keyAnnotation: KeyAnnotation, private val element: VariableEl
         }
     }
 
-    private val keyDefinitionFieldName: String = element.name.toUpperUnderscore()
 
-    protected val parameterName: String = element.name.toLowerCamel()
-    private val originalParameterName: String = element.name
+    protected val parameterName: String = element.parameterName
+
+    private val keyDefinitionFieldName: String = parameterName.toUpperUnderscore()
     private val keyValue: String = keyAnnotation.actualKeyValue(element)
-    protected val valueType: TypeMirror = element.asType()
+    protected val valueType: TypeMirror = element.evaluateTypeMirror
     protected val immediateLoad: Boolean = keyAnnotation.cacheStrategy == KeyAnnotation.IMMEDIATE_CACHE
     private val lazyCache: Boolean = keyAnnotation.cacheStrategy == KeyAnnotation.LAZY_CACHE
     protected val nonNull: Boolean = element.hasAnnotation(nonNullAnnotation)
@@ -52,11 +51,13 @@ abstract class Key(keyAnnotation: KeyAnnotation, private val element: VariableEl
     protected val defaultValue: Any = {
         val kvDefinitionName = "${element.enclosingElement.simpleName}"
 
-        if (Modifier.STATIC in element.modifiers) {
-            "$kvDefinitionName.$originalParameterName"
+        val accessor = if (Modifier.STATIC in element.modifiers) {
+            kvDefinitionName
         } else {
-            "${kvDefinitionName.toLowerCamel()}.$originalParameterName"
+            kvDefinitionName.toLowerCamel()
         }
+
+        "$accessor.${element.accessFormat}"
     }()
 
     protected val parameter: ParameterSpec by lazy {
@@ -73,9 +74,6 @@ abstract class Key(keyAnnotation: KeyAnnotation, private val element: VariableEl
 
     fun validate(): Either<Throwable, Unit> = eitherTry {
         when {
-            Modifier.FINAL !in element.modifiers && !hasParameter -> {
-                throw KeyValidationException.NotFoundRequiredModifier(parameterName, Modifier.FINAL)
-            }
             Modifier.PRIVATE in element.modifiers && !hasParameter -> {
                 throw KeyValidationException.InvalidModifier(parameterName, Modifier.PRIVATE)
             }
