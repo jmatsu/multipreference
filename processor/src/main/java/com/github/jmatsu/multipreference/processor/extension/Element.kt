@@ -15,10 +15,10 @@ val Element.name: String
 inline fun <reified T> Element.annotation(): T? where T : Annotation = getAnnotation(T::class.java)
 
 val Element.getterName: String
-    get() = "${if (asType().isBoolean) "is" else "get"}${name.toUpperCamel()}"
+    get() = "${if (asType().isBoolean) "is" else "get"}${parameterName.toUpperCamel()}"
 
 val Element.setterName: String
-    get() = "set${name.toUpperCamel()}"
+    get() = "set${parameterName.toUpperCamel()}"
 
 val Element.parameterName: String
     get() {
