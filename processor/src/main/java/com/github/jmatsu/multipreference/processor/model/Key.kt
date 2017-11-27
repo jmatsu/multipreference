@@ -52,7 +52,7 @@ abstract class Key(keyAnnotation: KeyAnnotation, private val element: VariableEl
     protected val defaultValue: Any = {
         val kvDefinitionName = "${element.enclosingElement.simpleName}"
 
-        if (Modifier.PRIVATE in element.modifiers) {
+        if (Modifier.STATIC in element.modifiers) {
             "$kvDefinitionName.$originalParameterName"
         } else {
             "${kvDefinitionName.toLowerCamel()}.$originalParameterName"
