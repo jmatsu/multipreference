@@ -183,9 +183,15 @@ final class InMemoryDataStore implements DataStore {
         return temporaryMapForTransaction != null;
     }
 
+    @Override
+    public void clear() {
+        temporaryMapForTransaction = null;
+        map.clear();
+    }
+
     /*
-     * ConcurrentHashMap doesn't allow putting null value
-     */
+         * ConcurrentHashMap doesn't allow putting null value
+         */
     private void putOrRemoveVal(@NonNull String key, @Nullable Object value) {
         if (value != null) {
             getMapToBeUpdated().put(key, value);

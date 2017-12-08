@@ -56,6 +56,12 @@ object Utility {
             finishTransactionMethod()
     )
 
+    fun clearMethod(): MethodSpec {
+        return public().void().method("clear") {
+            addStatement("dataStore.clear()")
+        }
+    }
+
     private fun beginTransactionMethod(): MethodSpec {
         return public().void().method("beginTransaction") {
             addStatement("dataStore.beginTransaction()")
