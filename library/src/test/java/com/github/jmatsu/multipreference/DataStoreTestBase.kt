@@ -114,4 +114,18 @@ abstract class DataStoreTestBase {
         dataStore.setNonNullStringSet("key", Collections.singleton("value"))
         dataStore.getNonNullStringSet("key", Collections.singleton("value2")) shouldEqual (Collections.singleton("value"))
     }
+
+    @Test
+    fun clear_should_remove_all_data() {
+        dataStore.setNullableStringSet("key1", Collections.singleton("value"))
+        dataStore.setNullableString("key2", "value")
+
+        dataStore.getNullableStringSet("key1", null).shouldNotBeNull()
+        dataStore.getNullableString("key2", null).shouldNotBeNull()
+
+        dataStore.clear()
+
+        dataStore.getNullableStringSet("key1", null).shouldBeNull()
+        dataStore.getNullableString("key2", null).shouldBeNull()
+    }
 }
