@@ -86,6 +86,7 @@ class Preference(annotation: PreferenceAnnotation, private val typeElement: Type
 
             addMethods(Utility.equalityMethods().asIterable())
             addMethods(Utility.transactionMethods().asIterable())
+            addMethod(Utility.clearMethod())
             addMethod(constructorSpec(constructorStatements))
         }
 

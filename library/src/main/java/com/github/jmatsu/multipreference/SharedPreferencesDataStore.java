@@ -172,6 +172,13 @@ final class SharedPreferencesDataStore implements DataStore {
         return temporaryEditorForTransaction != null;
     }
 
+    @Override
+    public void clear() {
+        SharedPreferences.Editor editor = temporaryEditorForTransaction != null ? temporaryEditorForTransaction : sharedPreferences.edit();
+        editor.clear().commit();
+        temporaryEditorForTransaction = null;
+    }
+
     @NonNull
     private SharedPreferences.Editor getEditorToBeUpdated() {
         return temporaryEditorForTransaction != null ? temporaryEditorForTransaction : sharedPreferences.edit();

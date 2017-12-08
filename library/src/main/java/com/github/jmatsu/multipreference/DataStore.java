@@ -205,4 +205,9 @@ public interface DataStore {
      * @return If this data store is in a transaction, this returns true. Otherwise, false.
      */
     boolean isInTransaction();
+
+    /**
+     * clear all. This will ignore transaction.
+     */
+    void clear();
 }
