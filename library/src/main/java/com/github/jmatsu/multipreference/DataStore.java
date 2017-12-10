@@ -210,4 +210,9 @@ public interface DataStore {
      * clear all. This will ignore transaction.
      */
     void clear();
+
+    /**
+     * destroy a file. Destroyed datastore cannot be used anymore.
+     */
+    void destroySelf();
 }

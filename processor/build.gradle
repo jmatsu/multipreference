@@ -27,6 +27,25 @@ sourceSets {
     test.java.srcDirs += project(":library").file("src/test/java")
 }
 
+def androidJarLocation() {
+    def sdkDir = System.getenv("ANDROID_HOME")
+
+    if (sdkDir != null) {
+        return "$sdkDir/platforms/android-${config.compileSdkVersion}/android.jar"
+    }
+
+    def localProperties = new File(rootDir, "local.properties")
+    if (localProperties.exists()) {
+        Properties properties = new Properties()
+        localProperties.withInputStream { instr ->
+            properties.load(instr)
+        }
+        return "${properties.getProperty('sdk.dir')}/platforms/android-${config.compileSdkVersion}/android.jar"
+    }
+
+    throw new AssertionError("Need to set ANDROID_HOME or prepare local.properties")
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
     implementation "org.funktionale:funktionale-either:$funktionaleVersion"
@@ -36,7 +55,7 @@ dependencies {
     implementation "com.squareup:javapoet:$javapoetVersion"
     implementation "com.google.guava:guava:$guavaVersion"
 
-    implementation "com.google.android:android:$androidVersion"
+    implementation files(androidJarLocation())
 
     testImplementation "org.jetbrains.spek:spek-api:$spekVersion"
     testImplementation "org.jetbrains.spek:spek-junit-platform-engine:$spekVersion"
