@@ -28,6 +28,8 @@ final class SharedPreferencesDataStore implements DataStore {
     @Nullable
     private SharedPreferences.Editor temporaryEditorForTransaction;
 
+    private boolean isDestroyed;
+
     SharedPreferencesDataStore(@NonNull Context context, @NonNull String name) {
         this.context = context.getApplicationContext();
         this.name = name;
@@ -132,6 +134,8 @@ final class SharedPreferencesDataStore implements DataStore {
     @SuppressLint("CommitPrefEdits")
     @Override
     public void beginTransaction() {
+        checkNotDestroyed();
+
         if (isInTransaction()) {
             throw new RuntimeException("Multiple transactions are not allowed.");
         }
@@ -141,6 +145,8 @@ final class SharedPreferencesDataStore implements DataStore {
 
     @Override
     public synchronized boolean finishTransaction(boolean commit) {
+        checkNotDestroyed();
+
         if (!isInTransaction()) {
             return false;
         }
@@ -164,6 +170,8 @@ final class SharedPreferencesDataStore implements DataStore {
 
     @Override
     public synchronized void cancelTransaction() {
+        checkNotDestroyed();
+
         if (!isInTransaction()) {
             return; // just finish
         }
@@ -184,6 +192,10 @@ final class SharedPreferencesDataStore implements DataStore {
 
     @Override
     public void clear() {
+        if (isDestroyed) {
+            return;
+        }
+
         SharedPreferences.Editor editor = temporaryEditorForTransaction != null ? temporaryEditorForTransaction : sharedPreferences.edit();
         editor.clear().commit();
         temporaryEditorForTransaction = null;
@@ -191,12 +203,30 @@ final class SharedPreferencesDataStore implements DataStore {
 
     @Override
     public void destroySelf() {
-        deleteSharedPreferences(context, name);
+        if (isDestroyed) {
+            return;
+        }
+
+        if (deleteSharedPreferences(context, name)) {
+            isDestroyed = true;
+        }
+    }
+
+    @Override
+    public boolean isDestroyed() {
+        return isDestroyed;
     }
 
     @NonNull
     private SharedPreferences.Editor getEditorToBeUpdated() {
+        checkNotDestroyed();
         return temporaryEditorForTransaction != null ? temporaryEditorForTransaction : sharedPreferences.edit();
+    }
+
+    private void checkNotDestroyed() {
+        if (isDestroyed) {
+            throw new RuntimeException("This operation is not allowed after destroy.");
+        }
     }
 
     @Nullable

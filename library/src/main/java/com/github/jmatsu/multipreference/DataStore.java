@@ -215,4 +215,9 @@ public interface DataStore {
      * destroy a file. Destroyed datastore cannot be used anymore.
      */
     void destroySelf();
+
+    /**
+     * whether or not {@link DataStore#destroySelf()} is called.
+     */
+    boolean isDestroyed();
 }
