@@ -17,12 +17,12 @@ object Sample1Spek : Spek({
 
         on("boolean properties") {
             it("should same as default") {
-                preference.booleanValue.shouldEqual(Sample1.BOOLEAN_VALUE)
+                preference.isBooleanValue.shouldEqual(Sample1.BOOLEAN_VALUE)
             }
 
             it("should change ") {
-                preference.booleanValue = false
-                preference.booleanValue.shouldBeFalse()
+                preference.isBooleanValue = false
+                preference.isBooleanValue.shouldBeFalse()
             }
         }
 
