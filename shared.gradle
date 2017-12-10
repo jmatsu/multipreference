@@ -15,7 +15,6 @@ class ArtifactConfiguration {
     def licenses = ['Apache-2.0']
 }
 
-
 ext {
     config = new AndroidConfig()
     artifactConfig = new ArtifactConfiguration()
