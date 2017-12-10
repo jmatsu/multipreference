@@ -62,6 +62,7 @@ dependencies {
     testImplementation "org.jetbrains.spek:spek-junit-platform-engine:$spekVersion"
 
     testImplementation "org.robolectric:robolectric:$robolectricVersion"
+    testImplementation files(androidJarLocation())
 
     testImplementation "org.amshove.kluent:kluent:$kluentVersion"
 }
