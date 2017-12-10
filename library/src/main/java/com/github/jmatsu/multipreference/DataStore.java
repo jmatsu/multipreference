@@ -210,4 +210,14 @@ public interface DataStore {
      * clear all. This will ignore transaction.
      */
     void clear();
+
+    /**
+     * destroy a file. Destroyed datastore cannot be used anymore.
+     */
+    void destroySelf();
+
+    /**
+     * whether or not {@link DataStore#destroySelf()} is called.
+     */
+    boolean isDestroyed();
 }

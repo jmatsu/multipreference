@@ -189,9 +189,19 @@ final class InMemoryDataStore implements DataStore {
         map.clear();
     }
 
+    @Override
+    public void destroySelf() {
+        clear();
+    }
+
+    @Override
+    public boolean isDestroyed() {
+        return false;
+    }
+
     /*
-     * ConcurrentHashMap doesn't allow putting null value
-     */
+             * ConcurrentHashMap doesn't allow putting null value
+             */
     private void putOrRemoveVal(@NonNull String key, @Nullable Object value) {
         if (value != null) {
             getMapToBeUpdated().put(key, value);

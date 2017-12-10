@@ -3,9 +3,11 @@ package com.github.jmatsu.multipreference;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.io.File;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,12 +17,22 @@ import java.util.Set;
 final class SharedPreferencesDataStore implements DataStore {
 
     @NonNull
+    private final Context context;
+
+    @NonNull
+    private final String name;
+
+    @NonNull
     private final SharedPreferences sharedPreferences;
 
     @Nullable
     private SharedPreferences.Editor temporaryEditorForTransaction;
 
+    private boolean isDestroyed;
+
     SharedPreferencesDataStore(@NonNull Context context, @NonNull String name) {
+        this.context = context.getApplicationContext();
+        this.name = name;
         sharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 
@@ -122,6 +134,8 @@ final class SharedPreferencesDataStore implements DataStore {
     @SuppressLint("CommitPrefEdits")
     @Override
     public void beginTransaction() {
+        checkNotDestroyed();
+
         if (isInTransaction()) {
             throw new RuntimeException("Multiple transactions are not allowed.");
         }
@@ -131,6 +145,8 @@ final class SharedPreferencesDataStore implements DataStore {
 
     @Override
     public synchronized boolean finishTransaction(boolean commit) {
+        checkNotDestroyed();
+
         if (!isInTransaction()) {
             return false;
         }
@@ -154,6 +170,8 @@ final class SharedPreferencesDataStore implements DataStore {
 
     @Override
     public synchronized void cancelTransaction() {
+        checkNotDestroyed();
+
         if (!isInTransaction()) {
             return; // just finish
         }
@@ -174,13 +192,66 @@ final class SharedPreferencesDataStore implements DataStore {
 
     @Override
     public void clear() {
+        if (isDestroyed) {
+            return;
+        }
+
         SharedPreferences.Editor editor = temporaryEditorForTransaction != null ? temporaryEditorForTransaction : sharedPreferences.edit();
         editor.clear().apply();
         temporaryEditorForTransaction = null;
     }
 
+    @Override
+    public void destroySelf() {
+        if (isDestroyed) {
+            return;
+        }
+
+        if (deleteSharedPreferences(context, name)) {
+            isDestroyed = true;
+        }
+    }
+
+    @Override
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
+
     @NonNull
     private SharedPreferences.Editor getEditorToBeUpdated() {
+        checkNotDestroyed();
         return temporaryEditorForTransaction != null ? temporaryEditorForTransaction : sharedPreferences.edit();
+    }
+
+    private void checkNotDestroyed() {
+        if (isDestroyed) {
+            throw new RuntimeException("This operation is not allowed after destroy.");
+        }
+    }
+
+    @Nullable
+    private static File getSharedPreferencesFile(@NonNull Context context, @NonNull String name) {
+        File file = getDataDir(context);
+
+        if (file == null) {
+            return null;
+        }
+
+        return new File(file, "/shared_prefs/" + name);
+    }
+
+    private static boolean deleteSharedPreferences(@NonNull Context context, @NonNull String name) {
+        File file = getSharedPreferencesFile(context, name);
+        return file == null || !file.exists() || file.delete();
+    }
+
+    @Nullable
+    private static File getDataDir(@NonNull Context context) {
+        if (Build.VERSION.SDK_INT >= 24) {
+            return context.getDataDir();
+        } else {
+            final String dataDir = context.getApplicationInfo().dataDir;
+            return dataDir != null ? new File(dataDir) : null;
+        }
     }
 }
