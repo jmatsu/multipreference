@@ -81,42 +81,42 @@ final class SharedPreferencesDataStore implements DataStore {
 
     @Override
     public void setNullableString(@NonNull String key, @Nullable String value) {
-        getEditorToBeUpdated().putString(key, value).commit();
+        getEditorToBeUpdated().putString(key, value).apply();
     }
 
     @Override
     public void setNonNullString(@NonNull String key, @NonNull String value) {
-        getEditorToBeUpdated().putString(key, value).commit();
+        getEditorToBeUpdated().putString(key, value).apply();
     }
 
     @Override
     public void setNullableStringSet(@NonNull String key, @Nullable Set<String> value) {
-        getEditorToBeUpdated().putStringSet(key, value).commit();
+        getEditorToBeUpdated().putStringSet(key, value).apply();
     }
 
     @Override
     public void setNonNullStringSet(@NonNull String key, @NonNull Set<String> value) {
-        getEditorToBeUpdated().putStringSet(key, value).commit();
+        getEditorToBeUpdated().putStringSet(key, value).apply();
     }
 
     @Override
     public void setInt(@NonNull String key, int value) {
-        getEditorToBeUpdated().putInt(key, value).commit();
+        getEditorToBeUpdated().putInt(key, value).apply();
     }
 
     @Override
     public void setLong(@NonNull String key, long value) {
-        getEditorToBeUpdated().putLong(key, value).commit();
+        getEditorToBeUpdated().putLong(key, value).apply();
     }
 
     @Override
     public void setFloat(@NonNull String key, float value) {
-        getEditorToBeUpdated().putFloat(key, value).commit();
+        getEditorToBeUpdated().putFloat(key, value).apply();
     }
 
     @Override
     public void setBoolean(@NonNull String key, boolean value) {
-        getEditorToBeUpdated().putBoolean(key, value).commit();
+        getEditorToBeUpdated().putBoolean(key, value).apply();
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -175,7 +175,7 @@ final class SharedPreferencesDataStore implements DataStore {
     @Override
     public void clear() {
         SharedPreferences.Editor editor = temporaryEditorForTransaction != null ? temporaryEditorForTransaction : sharedPreferences.edit();
-        editor.clear().commit();
+        editor.clear().apply();
         temporaryEditorForTransaction = null;
     }
 
