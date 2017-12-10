@@ -14,12 +14,41 @@ val TypeMirror.name: String
     }
 
 val TypeMirror.isPrimitive: Boolean
-    get() = TypeName.get(this).isPrimitive
+    get() = try {
+        TypeName.get(this).isPrimitive
+    } catch (e: Throwable) {
+        false
+    }
 
 val TypeMirror.isBoxedPrimitive: Boolean
-    get() = TypeName.get(this).isBoxedPrimitive
+    get() = try {
+        TypeName.get(this).isBoxedPrimitive
+    } catch (e: Throwable) {
+        false
+    }
 
-inline fun <reified T> TypeMirror.isSameType(): Boolean = typeUtils.isSameType(this, typeUtils.erasure(elementUtils.getTypeElement(T::class.java.canonicalName).asType()))
+val TypeMirror.boxedTypeName: TypeName?
+    get() = try {
+        val typeName = TypeName.get(this)
+
+        if (typeName.isPrimitive) {
+            typeName.box()
+        } else if (typeName.isBoxedPrimitive) {
+            typeName
+        } else {
+            null
+        }
+    } catch (e: Throwable) {
+        null
+    }
+
+inline fun <reified T> TypeMirror.isSameType(): Boolean {
+    return boxedTypeName?.let {
+        it == TypeName.get(elementUtils.getTypeElement(T::class.java.canonicalName).asType())
+    } ?: run {
+        typeUtils.isSameType(this, typeUtils.erasure(elementUtils.getTypeElement(T::class.java.canonicalName).asType()))
+    }
+}
 
 val TypeMirror.isString: Boolean
     get() = isSameType<String>()
