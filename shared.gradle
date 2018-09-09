@@ -1,8 +1,8 @@
 class AndroidConfig {
     def compileSdkVersion = 27
     def buildToolsVersion = '27.0.0'
-    def minSdkVersion = 16
-    def targetSdkVersion = 22
+    def minSdkVersion = 14
+    def targetSdkVersion = 26
 }
 
 class ArtifactConfiguration {
