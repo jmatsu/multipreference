@@ -2,10 +2,8 @@ ext {
     // dependencies
 
     // shared
-    kotlinVersion = '1.1.51'
+    kotlinVersion = '1.4.30'
     bintrayPluginVersion = '0.5.0'
-
-    supportLibraryVersion = '26.1.0'
 
     // processor
     javapoetVersion = '1.9.0'
@@ -16,9 +14,8 @@ ext {
     // test
     spekVersion = '1.1.5'
     spekRunnerVersion = '1.0.0'
-    robolectricVersion = '3.5.1'
-    kluentVersion = '1.30'
-    junitVersion = '4.12'
+    robolectricVersion = '4.3.1'
+    junitVersion = '4.13.1'
 
     // sample
     useVersion = "0.1-test"

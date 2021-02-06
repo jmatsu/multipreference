@@ -1,7 +1,7 @@
 package com.github.jmatsu.multipreference;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 public class Multipreference {
     static final boolean DEBUG = false;

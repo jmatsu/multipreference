@@ -2,8 +2,6 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
-
 repositories {
     maven {
         url  "https://dl.bintray.com/jmatsu/maven"
@@ -12,7 +10,6 @@ repositories {
 
 android {
     compileSdkVersion config.compileSdkVersion
-    buildToolsVersion config.buildToolsVersion
 
     defaultConfig {
         minSdkVersion config.minSdkVersion
@@ -37,15 +34,16 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation "androidx.annotation:annotation:1.1.0"
+    implementation "androidx.appcompat:appcompat:1.2.0"
 
     implementation project(":library")
     annotationProcessor project(":processor")
 
+    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+    testImplementation "org.jetbrains.kotlin:kotlin-test:$kotlinVersion"
     testImplementation "org.jetbrains.spek:spek-api:$spekVersion"
     testImplementation "org.jetbrains.spek:spek-junit-platform-engine:$spekVersion"
     testImplementation "org.junit.platform:junit-platform-runner:$spekRunnerVersion"
     testImplementation "junit:junit:$junitVersion"
-    testImplementation "org.amshove.kluent:kluent:$kluentVersion"
 }
