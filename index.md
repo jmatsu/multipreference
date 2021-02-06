@@ -1,37 +1,55 @@
-## Welcome to GitHub Pages
+## Multipreference
 
-You can use the [editor on GitHub](https://github.com/jmatsu/multipreference/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+[ ![Download](https://api.bintray.com/packages/jmatsu/maven/multipreference/images/download.svg) ](https://bintray.com/jmatsu/maven/multipreference/_latestVersion) [![Build Status](https://travis-ci.org/jmatsu/multipreference.svg?branch=master)](https://travis-ci.org/jmatsu/multipreference)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Multipreference provides an annotation-based Key-Value store for Android development. 
 
-### Markdown
+- Reflection-free
+- Support Map-based in-memory data store
+- Support SharedPreferences-based data store
+- Support flavor-based default value configurations
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Usage
 
-```markdown
-Syntax highlighted code block
+You need to create a class which will have Key-Value definitions, and prepare each Key-Value definitions which are represented by fields.
 
-# Header 1
-## Header 2
-### Header 3
+```java
+import com.github.jmatsu.multipreference.Key;
+import com.github.jmatsu.multipreference.Preference;
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+@Preference
+class KeyValueDefinitions {
+    @Key
+    static final int value = 0x01;
+}
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+- The class must have `com.github.jmatsu.multipreference.Preference`.
+- The class must not be *private*.
+- Basically *private* fields are *NOT* allowed.
 
-### Jekyll Themes
+This library will generates a class `KeyValueDefinitionsPreference` and Key-Value API like below.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/jmatsu/multipreference/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+```java
+private static final String VALUE = "value";
 
-### Support or Contact
+public int getValue() {
+    return dataStore.getInt(VALUE, KeyValueDefinitions.value);
+}
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+public void setValue(int value) {
+    dataStore.setInt(VALUE, value);
+}
+```
+
+You can use this class by calling `KeyValueDefinitionsPreference.inMemory()` or `KeyValueDefinitionsPreference.sharedPreference(context, preferencesName)`.
+
+You can see more examples in *sample* module's source and testcases.
+
+Especially for flavor-based configurations, you can check from:
+
+- [Base configuration](https://github.com/jmatsu/multipreference/tree/master/sample/src/main/java/com/github/jmatsu/multipreference/sample/FlavorBasedConfig.java)
+- [Debug configuration](https://github.com/jmatsu/multipreference/tree/master/sample/src/debug/java/com/github/jmatsu/multipreference/sample/DebugConfig.java) and [release configuration](https://github.com/jmatsu/multipreference/tree/master/sample/src/release/java/com/github/jmatsu/multipreference/sample/ReleaseConfig.java)
+- How to use : [debug](https://github.com/jmatsu/multipreference/blob/master/sample/src/testDebug/java/com/github/jmatsu/multipreference/sample/FlavorBasedConfigSpek.kt) and [release](https://github.com/jmatsu/multipreference/blob/master/sample/src/testRelease/java/com/github/jmatsu/multipreference/sample/FlavorBasedConfigSpek.kt)
+
+Please visit https://github.com/jmatsu/multipreference for the more details.
