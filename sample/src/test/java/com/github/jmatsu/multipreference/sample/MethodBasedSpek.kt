@@ -1,12 +1,12 @@
 package com.github.jmatsu.multipreference.sample
 
-import org.amshove.kluent.shouldEqual
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import org.jetbrains.spek.api.dsl.on
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
+import kotlin.test.assertEquals
 
 @RunWith(JUnitPlatform::class)
 object MethodBasedSpek : Spek({
@@ -17,34 +17,34 @@ object MethodBasedSpek : Spek({
 
         on("firstKey") {
             it("should same as default") {
-                preference.firstKey.shouldEqual(definition.firstKey())
+                assertEquals(definition.firstKey(), preference.firstKey)
             }
 
             it("should change ") {
                 preference.firstKey = "changed"
-                preference.firstKey.shouldEqual("changed")
+                assertEquals("changed", preference.firstKey)
             }
         }
 
         on("getSecondKey") {
             it("should same as default") {
-                preference.secondKey.shouldEqual(definition.secondKey)
+                assertEquals(definition.secondKey, preference.secondKey)
             }
 
             it("should change ") {
                 preference.secondKey = "changed"
-                preference.secondKey.shouldEqual("changed")
+                assertEquals("changed", preference.secondKey)
             }
         }
 
         on("thirdKey") {
             it("should same as default") {
-                preference.thirdKey.shouldEqual(definition.thirdKey())
+                assertEquals(definition.thirdKey(), preference.thirdKey)
             }
 
             it("should change ") {
                 preference.thirdKey = 123123123
-                preference.thirdKey.shouldEqual(123123123)
+                assertEquals(123123123, preference.thirdKey)
             }
         }
     }

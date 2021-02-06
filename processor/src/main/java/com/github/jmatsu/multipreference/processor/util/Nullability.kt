@@ -1,7 +1,7 @@
 package com.github.jmatsu.multipreference.processor.util
 
-private val nonNullAnnotationNames: Array<String> = arrayOf("android.support.annotation.NonNull")
-private val nullableAnnotationNames: Array<String> = arrayOf("android.support.annotation.Nullable")
+private val nonNullAnnotationNames: Array<String> = arrayOf("androidx.annotation.NonNull")
+private val nullableAnnotationNames: Array<String> = arrayOf("androidx.annotation.Nullable")
 
 @Suppress("unchecked_cast")
 fun getNonNullAnnotation(): Class<out Annotation>? {

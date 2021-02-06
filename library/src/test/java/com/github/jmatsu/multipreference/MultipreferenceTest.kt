@@ -1,21 +1,22 @@
 package com.github.jmatsu.multipreference
 
-import org.amshove.kluent.mock
-import org.amshove.kluent.shouldBe
+import android.content.Context
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.BlockJUnit4ClassRunner
+import org.mockito.Mockito.mock
+import kotlin.test.assertSame
 
 @RunWith(BlockJUnit4ClassRunner::class)
 class MultipreferenceTest {
 
     @Test
     fun inMemory_should_returns_InMemoryDataStore() {
-        Multipreference.inMemory().javaClass.shouldBe(InMemoryDataStore::class.java)
+        assertSame(InMemoryDataStore::class.java, Multipreference.inMemory().javaClass)
     }
 
     @Test
     fun sharedPreferences_should_returns_SharedPreferencesDataStore() {
-        Multipreference.sharedPreferences(mock(), "dummy").javaClass.shouldBe(SharedPreferencesDataStore::class.java)
+        assertSame(SharedPreferencesDataStore::class.java, Multipreference.sharedPreferences(mock(Context::class.java), "dummy").javaClass)
     }
 }

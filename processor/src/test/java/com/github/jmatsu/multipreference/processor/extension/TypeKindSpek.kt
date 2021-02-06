@@ -1,11 +1,11 @@
 package com.github.jmatsu.multipreference.processor.extension
 
-import org.amshove.kluent.shouldBe
-import org.amshove.kluent.shouldBeNull
-import org.amshove.kluent.shouldEqual
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.*
 import javax.lang.model.type.TypeKind
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
+import kotlin.test.assertSame
 
 object TypeKindSpek : Spek({
     describe("TypeKind") {
@@ -13,16 +13,16 @@ object TypeKindSpek : Spek({
             context("toNormalizeForAtomicReference") {
                 on("a target is null") {
                     it("returns 0L") {
-                        TypeKind.LONG.toNormalizeForAtomicReference(null).shouldEqual("0L")
+                        assertEquals("0L", TypeKind.LONG.toNormalizeForAtomicReference(null))
                     }
                 }
 
                 on("a target is not null") {
                     it("has 'L' as suffix") {
-                        TypeKind.LONG.toNormalizeForAtomicReference(12).shouldEqual("12L")
-                        TypeKind.LONG.toNormalizeForAtomicReference(-123).shouldEqual("-123L")
-                        TypeKind.LONG.toNormalizeForAtomicReference(12L).shouldEqual("12L")
-                        TypeKind.LONG.toNormalizeForAtomicReference(-123L).shouldEqual("-123L")
+                        assertEquals("12L", TypeKind.LONG.toNormalizeForAtomicReference(12))
+                        assertEquals("-123L", TypeKind.LONG.toNormalizeForAtomicReference(-123))
+                        assertEquals("12L", TypeKind.LONG.toNormalizeForAtomicReference(12L))
+                        assertEquals("-123L", TypeKind.LONG.toNormalizeForAtomicReference(-123L))
                     }
                 }
             }
@@ -32,14 +32,14 @@ object TypeKindSpek : Spek({
             context("toNormalizeForAtomicReference") {
                 on("a target is null") {
                     it("returns false") {
-                        TypeKind.BOOLEAN.toNormalizeForAtomicReference(null).shouldEqual("false")
+                        assertEquals("false", TypeKind.BOOLEAN.toNormalizeForAtomicReference(null))
                     }
                 }
 
                 on("a target is not null") {
                     it("has no suffix") {
-                        TypeKind.BOOLEAN.toNormalizeForAtomicReference(false).shouldEqual("false")
-                        TypeKind.BOOLEAN.toNormalizeForAtomicReference(true).shouldEqual("true")
+                        assertEquals("false", TypeKind.BOOLEAN.toNormalizeForAtomicReference(false))
+                        assertEquals("true", TypeKind.BOOLEAN.toNormalizeForAtomicReference(true))
                     }
                 }
             }
@@ -49,14 +49,14 @@ object TypeKindSpek : Spek({
             context("toNormalizeForAtomicReference") {
                 on("a target is null") {
                     it("returns false") {
-                        TypeKind.BOOLEAN.toNormalizeForAtomicReference(null).shouldEqual("false")
+                        assertEquals("false", TypeKind.BOOLEAN.toNormalizeForAtomicReference(null))
                     }
                 }
 
                 on("a target is not null") {
                     it("has no suffix") {
-                        TypeKind.BOOLEAN.toNormalizeForAtomicReference(false).shouldEqual("false")
-                        TypeKind.BOOLEAN.toNormalizeForAtomicReference(true).shouldEqual("true")
+                        assertEquals("false", TypeKind.BOOLEAN.toNormalizeForAtomicReference(false))
+                        assertEquals("true", TypeKind.BOOLEAN.toNormalizeForAtomicReference(true))
                     }
                 }
             }
@@ -66,14 +66,14 @@ object TypeKindSpek : Spek({
             context("toNormalizeForAtomicReference") {
                 on("a target is null") {
                     it("returns 0") {
-                        TypeKind.INT.toNormalizeForAtomicReference(null).shouldEqual("0")
+                        assertEquals("0",  TypeKind.INT.toNormalizeForAtomicReference(null))
                     }
                 }
 
                 on("a target is not null") {
                     it("has no suffix") {
-                        TypeKind.INT.toNormalizeForAtomicReference(12).shouldEqual("12")
-                        TypeKind.INT.toNormalizeForAtomicReference(-123).shouldEqual("-123")
+                        assertEquals("12", TypeKind.INT.toNormalizeForAtomicReference(12))
+                        assertEquals("-123", TypeKind.INT.toNormalizeForAtomicReference(-123))
                     }
                 }
             }
@@ -83,16 +83,16 @@ object TypeKindSpek : Spek({
             context("toNormalizeForAtomicReference") {
                 on("a target is null") {
                     it("returns null") {
-                        TypeKind.FLOAT.toNormalizeForAtomicReference(null).shouldBeNull()
+                        assertNull(TypeKind.FLOAT.toNormalizeForAtomicReference(null))
                     }
                 }
 
                 on("a target is not null") {
                     it("has 'f' as suffix") {
-                        TypeKind.FLOAT.toNormalizeForAtomicReference(12).shouldEqual("12f")
-                        TypeKind.FLOAT.toNormalizeForAtomicReference(-123).shouldEqual("-123f")
-                        TypeKind.FLOAT.toNormalizeForAtomicReference(12.1f).shouldEqual("12.1f")
-                        TypeKind.FLOAT.toNormalizeForAtomicReference(-123.3f).shouldEqual("-123.3f")
+                        assertEquals("12f", TypeKind.FLOAT.toNormalizeForAtomicReference(12))
+                        assertEquals("-123f", TypeKind.FLOAT.toNormalizeForAtomicReference(-123))
+                        assertEquals("12.1f", TypeKind.FLOAT.toNormalizeForAtomicReference(12.1f))
+                        assertEquals("-123.3f", TypeKind.FLOAT.toNormalizeForAtomicReference(-123.3f))
                     }
                 }
             }
@@ -102,15 +102,15 @@ object TypeKindSpek : Spek({
             context("toNormalizeForAtomicReference") {
                 on("a target is null") {
                     it("returns null") {
-                        TypeKind.DECLARED.toNormalizeForAtomicReference(null).shouldBeNull()
+                        assertNull(TypeKind.DECLARED.toNormalizeForAtomicReference(null))
                     }
                 }
 
                 on("a target is not null") {
                     it("returns self") {
-                        TypeKind.DECLARED.toNormalizeForAtomicReference("abc").shouldEqual("abc")
+                        assertEquals("abc", TypeKind.DECLARED.toNormalizeForAtomicReference("abc"))
                         val any = Any()
-                        TypeKind.DECLARED.toNormalizeForAtomicReference(any).shouldBe(any)
+                        assertSame(any, TypeKind.DECLARED.toNormalizeForAtomicReference(any))
                     }
                 }
             }

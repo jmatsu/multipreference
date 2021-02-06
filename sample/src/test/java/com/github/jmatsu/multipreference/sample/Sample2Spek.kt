@@ -1,6 +1,5 @@
 package com.github.jmatsu.multipreference.sample
 
-import org.amshove.kluent.shouldEqual
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
@@ -8,6 +7,7 @@ import org.jetbrains.spek.api.dsl.on
 import org.junit.platform.runner.JUnitPlatform
 import org.junit.runner.RunWith
 import java.util.*
+import kotlin.test.assertEquals
 
 @RunWith(JUnitPlatform::class)
 object Sample2Spek : Spek({
@@ -16,56 +16,56 @@ object Sample2Spek : Spek({
 
         on("IMMEDIATE_CACHE") {
             it("should same as default") {
-                preference.immediateCache.shouldEqual(Sample2.IMMEDIATE_CACHE)
+                assertEquals(Sample2.IMMEDIATE_CACHE, preference.immediateCache)
             }
 
             it("should change ") {
                 preference.immediateCache = 123123
-                preference.immediateCache.shouldEqual(123123)
+                assertEquals(123123, preference.immediateCache)
             }
         }
 
         on("LAZY_CACHE") {
             it("should same as default") {
-                preference.lazyCache.shouldEqual(Sample2.LAZY_CACHE)
+                assertEquals(Sample2.LAZY_CACHE, preference.lazyCache)
             }
 
             it("should change ") {
                 preference.lazyCache = 234235215
-                preference.lazyCache.shouldEqual(234235215)
+                assertEquals(234235215, preference.lazyCache)
             }
         }
 
         on("CUSTOM_NAME") {
             it("should same as default") {
-                preference.customName.shouldEqual(Sample2.CUSTOM_NAME)
+                assertEquals(Sample2.CUSTOM_NAME, preference.customName)
             }
 
             it("should change ") {
                 preference.customName = -43
-                preference.customName.shouldEqual(-43)
+                assertEquals(-43, preference.customName)
             }
         }
 
         on("IMMEDIATE_CACHE_AND_CUSTOM_NAME") {
             it("should same as default") {
-                preference.immediateCacheAndCustomName.shouldEqual(Sample2.IMMEDIATE_CACHE_AND_CUSTOM_NAME)
+                assertEquals(Sample2.IMMEDIATE_CACHE_AND_CUSTOM_NAME, preference.immediateCacheAndCustomName)
             }
 
             it("should change ") {
                 preference.immediateCacheAndCustomName = -43234
-                preference.immediateCacheAndCustomName.shouldEqual(-43234)
+                assertEquals(-43234, preference.immediateCacheAndCustomName)
             }
         }
 
         on("LAZY_CACHE_AND_CUSTOM_NAME") {
             it("should same as default") {
-                preference.lazyCacheAndCustomName.shouldEqual(Sample2.LAZY_CACHE_AND_CUSTOM_NAME)
+                assertEquals(Sample2.LAZY_CACHE_AND_CUSTOM_NAME, preference.lazyCacheAndCustomName)
             }
 
             it("should change ") {
                 preference.lazyCacheAndCustomName = Collections.singleton("foo")
-                preference.lazyCacheAndCustomName.shouldEqual(Collections.singleton("foo"))
+                assertEquals(Collections.singleton("foo"), preference.lazyCacheAndCustomName)
             }
         }
     }

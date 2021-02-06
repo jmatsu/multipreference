@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.io.File;
 import java.util.Map;
@@ -196,7 +196,7 @@ final class SharedPreferencesDataStore implements DataStore {
             return;
         }
 
-        SharedPreferences.Editor editor = temporaryEditorForTransaction != null ? temporaryEditorForTransaction : sharedPreferences.edit();
+        @SuppressLint("CommitPrefEdits") SharedPreferences.Editor editor = temporaryEditorForTransaction != null ? temporaryEditorForTransaction : sharedPreferences.edit();
         editor.clear().apply();
         temporaryEditorForTransaction = null;
     }

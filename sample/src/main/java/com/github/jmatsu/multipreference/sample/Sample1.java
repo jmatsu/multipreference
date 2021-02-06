@@ -1,6 +1,6 @@
 package com.github.jmatsu.multipreference.sample;
 
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.VisibleForTesting;
 
 import com.github.jmatsu.multipreference.Key;
 import com.github.jmatsu.multipreference.Preference;
