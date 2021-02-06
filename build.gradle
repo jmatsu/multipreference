@@ -23,11 +23,13 @@ allprojects {
         google()
         jcenter()
     }
-
+    apply plugin: 'maven-publish'
+    apply plugin: 'signing'
     apply from: "${rootDir.absolutePath}/shared.gradle"
     apply from: "${rootDir.absolutePath}/version.gradle"
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+ext {
+    def versionFile = new File(rootDir, 'VERSION')
+    releaseVersion = (versionFile.exists() ? versionFile.text : releaseVersionCandidate).trim()
 }

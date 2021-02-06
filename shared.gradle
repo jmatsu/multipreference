@@ -9,9 +9,10 @@ class ArtifactConfiguration {
     def groupId = 'com.github.jmatsu'
     def libraryArtifactId = 'multipreference'
     def processorArtifactId = 'multipreference-processor'
+    def libraryDisplayName = 'Runtime library of multipreference'
+    def processorDisplayName = 'APT processor of multipreference'
     def description = 'APT library for managing android\'s SharedPreference'
     def websiteUrl = 'https://github.com/jmatsu/multipreference'
-    def licenses = ['Apache-2.0']
 }
 
 ext {
@@ -23,5 +24,18 @@ ext {
         releaseVersionCandidate = process.text + "-" + gitSha
     } else {
         releaseVersionCandidate = "0.1" + "-" + gitSha
+    }
+}
+
+afterEvaluate {
+    signing {
+        required { gradle.taskGraph.hasTask("publish") || gradle.taskGraph.hasTask("publishToMavenLocal") }
+
+        def signingKey = findProperty("signingKey")
+        def signingPassword = findProperty("signingPassword")
+        useInMemoryPgpKeys(signingKey, signingPassword)
+        publishing.publications.configureEach { publication ->
+            sign publication
+        }
     }
 }
