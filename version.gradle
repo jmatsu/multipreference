@@ -2,10 +2,8 @@ ext {
     // dependencies
 
     // shared
-    kotlinVersion = '1.1.51'
+    kotlinVersion = '1.4.30'
     bintrayPluginVersion = '0.5.0'
-
-    supportLibraryVersion = '26.1.0'
 
     // processor
     javapoetVersion = '1.9.0'

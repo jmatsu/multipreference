@@ -2,8 +2,6 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
-
 repositories {
     maven {
         url  "https://dl.bintray.com/jmatsu/maven"
@@ -12,7 +10,6 @@ repositories {
 
 android {
     compileSdkVersion config.compileSdkVersion
-    buildToolsVersion config.buildToolsVersion
 
     defaultConfig {
         minSdkVersion config.minSdkVersion
@@ -37,7 +34,6 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
     implementation 'com.android.support:appcompat-v7:26.1.0'
 
     implementation project(":library")
