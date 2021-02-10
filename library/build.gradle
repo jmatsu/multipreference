@@ -1,7 +1,7 @@
 buildscript {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
@@ -10,10 +10,6 @@ buildscript {
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android' // only for testing
-
-repositories {
-    maven { url "http://dl.bintray.com/jetbrains/spek" }
-}
 
 android {
     compileSdkVersion config.compileSdkVersion

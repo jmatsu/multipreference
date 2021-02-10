@@ -57,12 +57,14 @@ Especially for flavor-based configurations, you can check from:
 
 The latest version : [ ![Download](https://api.bintray.com/packages/jmatsu/maven/multipreference/images/download.svg) ](https://bintray.com/jmatsu/maven/multipreference/_latestVersion)
 
-You need to add the following to build.gradle of *android-application* module or *android-library* module. This library is available on `jcenter`.
+You need to add the following to build.gradle of *android-application* module or *android-library* module. This library is available on `mavenCentral`.
+
+> Only 0.3.1 is available at Maven Central. Older versions are unavailable after JCenter sunsets.
 
 ```groovy
 repositories {
     maven {
-        jcenter()
+        mavenCentral()
     }
 }
 
