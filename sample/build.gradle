@@ -2,12 +2,6 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
-repositories {
-    maven {
-        url  "https://dl.bintray.com/jmatsu/maven"
-    }
-}
-
 android {
     compileSdkVersion config.compileSdkVersion
 
