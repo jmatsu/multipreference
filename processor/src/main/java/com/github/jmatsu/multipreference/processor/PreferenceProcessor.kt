@@ -1,5 +1,6 @@
 package com.github.jmatsu.multipreference.processor
 
+import com.github.jmatsu.multipreference.processor.exception.PreferenceValidationException
 import com.github.jmatsu.multipreference.processor.util.getNonNullAnnotation
 import com.github.jmatsu.multipreference.processor.util.getNullableAnnotation
 import com.squareup.javapoet.JavaFile
@@ -31,27 +32,24 @@ class PreferenceProcessor : AbstractProcessor() {
                 .map { PreferenceModel(it.getAnnotation(PreferenceAnnotation::class.java), it as TypeElement) }
                 .forEach { prefModel ->
                     try {
-                        with(prefModel.validate()) {
-                            left().forEach {
-                                messager.printMessage(Diagnostic.Kind.ERROR, "While processing ${prefModel.elementName}, ${it.message}")
-                            }
+                        prefModel.validate()
+                        val typeSpec = prefModel.toTypeSpec()
+                        JavaFile.builder(prefModel.packageName, typeSpec).build().writeTo(filer)
+                    } catch (e: PreferenceValidationException) {
+                        messager.printMessage(Diagnostic.Kind.ERROR, "[PreferenceValidationException] while processing ${prefModel.elementName}, ${e.message}")
 
-                            right().forEach {
-                                with(prefModel.toTypeSpec()) {
-                                    left().forEach {
-                                        it.forEach {
-                                            messager.printMessage(Diagnostic.Kind.ERROR, "While processing ${prefModel.elementName}, ${it.message}")
-                                        }
-                                    }
-
-                                    right().forEach {
-                                        JavaFile.builder(prefModel.packageName, it).build().writeTo(filer)
-                                    }
+                        when (e) {
+                            is PreferenceValidationException.TypeSpecBuildException -> {
+                                e.throwables.forEach {
+                                    messager.printMessage(Diagnostic.Kind.ERROR, "[${it.javaClass.simpleName}] while processing ${prefModel.elementName}, ${it.message}")
                                 }
+                            }
+                            is PreferenceValidationException.InvalidModifier -> {
+                                // no-op
                             }
                         }
                     } catch (e: Exception) {
-                        messager.printMessage(Diagnostic.Kind.ERROR, "While processing ${prefModel.elementName}, ${e.message}")
+                        messager.printMessage(Diagnostic.Kind.ERROR, "[Unknown Error] While processing ${prefModel.elementName}, ${e.message}")
                         e.printStackTrace()
                     }
                 }
