@@ -63,9 +63,7 @@ You need to add the following to build.gradle of *android-application* module or
 
 ```groovy
 repositories {
-    maven {
-        mavenCentral()
-    }
+    mavenCentral()
 }
 
 ext.multipreferenceVersion = '[latest_version]'
