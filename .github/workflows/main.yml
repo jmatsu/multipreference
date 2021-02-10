@@ -52,7 +52,7 @@ jobs:
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
       - name: Publish artifacts
         run: |
-          ./gradlew publishReleaseToMavenRepository
+          ./gradlew publishReleasePublicationToMavenRepository
         env:
           ORG_GRADLE_PROJECT_nexusUsername: jmatsu
           ORG_GRADLE_PROJECT_nexusPassword: ${{ secrets.NEXUS_PASSWORD }}

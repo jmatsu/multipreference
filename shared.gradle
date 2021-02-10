@@ -39,7 +39,7 @@ ext {
 
 afterEvaluate {
     signing {
-        required { project.ext.isRelease && gradle.taskGraph.hasTask("publishReleaseToMavenRepository") || findProperty("signingRequired") == "true" }
+        required { project.ext.isRelease && gradle.taskGraph.hasTask("publishReleasePublicationToMavenRepository") || findProperty("signingRequired") == "true" }
 
         def signingKey = findProperty("signingKey")
         def signingPassword = findProperty("signingPassword")
