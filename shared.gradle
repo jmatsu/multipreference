@@ -21,20 +21,19 @@ class ArtifactConfiguration {
 ext {
     config = new AndroidConfig()
     artifactConfig = new ArtifactConfiguration()
-    gitSha = "git rev-parse --short HEAD".execute().text
-    def process = "git describe --abbrev=0".execute()
-    if (process.waitFor() == 0) {
-        releaseVersionCandidate = process.text + "-" + gitSha
-    } else {
-        releaseVersionCandidate = "0.1" + "-" + gitSha
-    }
     def versionFile = new File(rootDir, 'VERSION')
-    releaseVersion = (versionFile.exists() ? versionFile.text : releaseVersionCandidate).trim()
-    isRelease = releaseVersion =~ /\d+\.\d+\.\d+/
+    if (versionFile.exists()) {
+        versionText = versionFile.text.trim()
+        isRelease = versionText =~ /^\d+\.\d+\.\d+$/
+        releaseVersion = isRelease ? versionText : "${versionText.split("-")[0]}-SNAPSHOT"
+    } else {
+        releaseVersion = "0.99.0"
+        isRelease = false
+    }
 
     repoUrl = isRelease ? "https://oss.sonatype.org/service/local/staging/deploy/maven2/" : "https://oss.sonatype.org/content/repositories/snapshots/"
-    repoUsername = hasProperty('nexusUsername') ? nexusUsername : ""
-    repoPassowrd = hasProperty('nexusPassword') ? nexusPassword : ""
+    repoUsername = findProperty('nexusUsername')
+    repoPassowrd = findProperty('nexusPassword')
 }
 
 afterEvaluate {
