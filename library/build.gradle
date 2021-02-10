@@ -10,7 +10,6 @@ buildscript {
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android' // only for testing
-apply plugin: 'com.novoda.bintray-release'
 
 repositories {
     maven { url "http://dl.bintray.com/jetbrains/spek" }
@@ -48,20 +47,6 @@ dependencies {
     testImplementation "org.mockito:mockito-core:3.7.7"
 }
 
-publish {
-    def versionFile = new File(rootDir, 'VERSION')
-
-    userOrg = artifactConfig.user
-    groupId = artifactConfig.groupId
-    artifactId = artifactConfig.libraryArtifactId
-
-    version = (versionFile.exists() ? versionFile.text : releaseVersionCandidate).trim()
-    
-    desc = artifactConfig.description
-    website = artifactConfig.websiteUrl
-    licences = artifactConfig.licenses
-}
-
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier = 'sources'
@@ -80,4 +65,80 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 artifacts {
     archives javadocJar
     archives sourcesJar
+}
+
+def publicationVariants = ['release']
+
+android.libraryVariants.configureEach { variant ->
+    if (publicationVariants.contains(variant.name)) {
+        project.task("generateJavadocFor${variant.name.capitalize()}Publication", type: Javadoc) {
+            source = variant.getJavaCompileProvider().get().source
+            classpath = variant.getJavaCompileProvider().get().classpath + files(project.android.getBootClasspath())
+            options.linkSource true
+        }
+
+        project.task("generateSourcesJarFor${variant.name.capitalize()}Publication", type: Jar) {
+            archiveClassifier.set('sources')
+            from variant.sourceSets.collect { it.javaDirectories }.flatten()
+        }
+
+        project.task("generateJavadocsJarFor${variant.name.capitalize()}Publication", type: Jar) {
+            archiveClassifier.set('javadoc')
+            from files(tasks.getByName("generateJavadocFor${variant.name.capitalize()}Publication"))
+        }
+
+        project.tasks.findByName("assemble${variant.name.capitalize()}").dependsOn(
+                "generateSourcesJarFor${variant.name.capitalize()}Publication",
+                "generateJavadocsJarFor${variant.name.capitalize()}Publication",
+                "generatePomFileFor${variant.name.capitalize()}Publication"
+        )
+    }
+}
+
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                url = repoUrl
+
+                credentials(PasswordCredentials) {
+                    username = repoUsername
+                    password = repoPassowrd
+                }
+            }
+        }
+
+        publications {
+            release(MavenPublication) {
+                from components.release
+                artifact generateSourcesJarForReleasePublication
+                artifact generateJavadocsJarForReleasePublication
+
+                groupId = artifactConfig.groupId
+                artifactId = artifactConfig.libraryArtifactId
+                version = rootProject.ext.releaseVersion
+
+                pom {
+                    name = artifactConfig.libraryDisplayName
+                    description = artifactConfig.description
+                    url = artifactConfig.websiteUrl
+                    licenses {
+                        license {
+                            name = "The Apache Software License, Version 2.0"
+                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+                            distribution = "repo"
+                        }
+                    }
+                    developers {
+                        developer {
+                            name = "Jumpei Matsuda"
+                        }
+                    }
+                    scm {
+                        url = artifactConfig.websiteUrl
+                    }
+                }
+            }
+        }
+    }
 }
