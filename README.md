@@ -1,6 +1,6 @@
 # Multipreference
 
-[ ![Download](https://img.shields.io/maven-central/v/com.github.jmatsu/multipreference) ](https://ossindex.sonatype.org/component/pkg:maven/com.github.jmatsu/multipreference) [![Build Status](https://github.com/jmatsu/multipreference/workflows/build%20and%20test/badge.svg)](https://github.com/jmatsu/multipreference/actions)
+[ ![Download](https://img.shields.io/maven-central/v/com.github.jmatsu/multipreference) ](https://ossindex.sonatype.org/component/pkg:maven/com.github.jmatsu/multipreference) [![Build Status](https://github.com/jmatsu/multipreference/workflows/Build%20and%20Test/badge.svg)](https://github.com/jmatsu/multipreference/actions)
 
 Multipreference provides an annotation-based Key-Value store for Android development. 
 
