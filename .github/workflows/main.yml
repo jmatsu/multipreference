@@ -30,8 +30,6 @@ jobs:
       - run: ./gradlew build
 
   production-release:
-    if: github.event_name == 'push' && contains(github.ref, 'refs/tags/')
-    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
