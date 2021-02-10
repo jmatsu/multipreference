@@ -14,8 +14,6 @@ import com.squareup.javapoet.CodeBlock
 import com.squareup.javapoet.FieldSpec
 import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.ParameterSpec
-import org.funktionale.either.Either
-import org.funktionale.either.eitherTry
 import javax.lang.model.element.Element
 import javax.lang.model.element.Modifier
 import javax.lang.model.type.TypeKind.*
@@ -72,7 +70,7 @@ abstract class Key(keyAnnotation: KeyAnnotation, private val element: Element) {
         toSetterCodeOfDataStore()
     }
 
-    fun validate(): Either<Throwable, Unit> = eitherTry {
+    fun validate() {
         when {
             Modifier.PRIVATE in element.modifiers && !hasParameter -> {
                 throw KeyValidationException.InvalidModifier(parameterName, Modifier.PRIVATE)

@@ -26,6 +26,11 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        jcenter {
+            content {
+                includeModule("org.jetbrains.trove4j", "trove4j")
+            }
+        }
     }
     apply from: "${rootDir.absolutePath}/shared.gradle"
     apply from: "${rootDir.absolutePath}/version.gradle"

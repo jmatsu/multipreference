@@ -47,7 +47,6 @@ def androidJarLocation() {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-    implementation "org.funktionale:funktionale-either:$funktionaleVersion"
 
     implementation "androidx.annotation:annotation:1.1.0"
 

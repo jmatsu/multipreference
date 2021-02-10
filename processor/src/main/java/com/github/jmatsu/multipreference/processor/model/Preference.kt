@@ -7,6 +7,7 @@ import com.github.jmatsu.multipreference.processor.dsl.private
 import com.github.jmatsu.multipreference.processor.dsl.public
 import com.github.jmatsu.multipreference.processor.elementUtils
 import com.github.jmatsu.multipreference.processor.exception.KeyValidationException
+import com.github.jmatsu.multipreference.processor.exception.PreferenceValidationException
 import com.github.jmatsu.multipreference.processor.extension.annotation
 import com.github.jmatsu.multipreference.processor.extension.name
 import com.github.jmatsu.multipreference.processor.extension.toLowerCamel
@@ -14,8 +15,6 @@ import com.squareup.javapoet.CodeBlock
 import com.squareup.javapoet.MethodSpec
 import com.squareup.javapoet.ParameterSpec
 import com.squareup.javapoet.TypeSpec
-import org.funktionale.either.Either
-import org.funktionale.either.eitherTry
 import javax.lang.model.element.Element
 import javax.lang.model.element.Modifier
 import javax.lang.model.element.TypeElement
@@ -36,18 +35,15 @@ class Preference(annotation: PreferenceAnnotation, private val typeElement: Type
     private val dataStoreParameter: ParameterSpec = nonNullType<DataStore>().parameter(dataStoreVariableName)
     private val keyValueDefParameter: ParameterSpec = nonNullType(typeElement.asType()).parameter("${typeElement.simpleName}".toLowerCamel())
 
-    fun validate(): Either<Throwable, Unit> = eitherTry {
-        when {
-            Modifier.PRIVATE in typeElement.modifiers -> {
-                throw KeyValidationException.InvalidModifier(typeElement.name, Modifier.PRIVATE)
-            }
-            else -> {
-                // no-op
-            }
+    @Throws(PreferenceValidationException::class)
+    fun validate() {
+        if (Modifier.PRIVATE in typeElement.modifiers) {
+            throw PreferenceValidationException.InvalidModifier(typeElement.name, Modifier.PRIVATE)
         }
     }
 
-    fun toTypeSpec(): Either<List<Throwable>, TypeSpec> {
+    @Throws(PreferenceValidationException::class)
+    fun toTypeSpec(): TypeSpec {
         val throwables = arrayListOf<Throwable>()
 
         val typeSpec = public().type(className) {
@@ -68,19 +64,21 @@ class Preference(annotation: PreferenceAnnotation, private val typeElement: Type
             addField(private().final().nonNullType<DataStore>().buildField(dataStoreParameter.name))
             addField(private().final().nonNullType(typeElement.asType()).buildField(keyValueDefParameter.name))
 
-            keys.forEach {
-                with(it) {
-                    it.validate().left().forEach {
-                        throwables.add(it)
+            keys.forEach { key ->
+                try {
+                    key.validate()
+
+                    with (key) {
+                        addField(toKeyDefinitionField())
+
+                        addFields(toFields().asIterable())
+                        addMethods(toGetters().asIterable())
+                        addMethods(toSetters().asIterable())
+
+                        constructorStatements.addAll(toConstructorStatements())
                     }
-
-                    addField(toKeyDefinitionField())
-
-                    addFields(toFields().asIterable())
-                    addMethods(toGetters().asIterable())
-                    addMethods(toSetters().asIterable())
-
-                    constructorStatements.addAll(toConstructorStatements())
+                } catch (e: KeyValidationException) {
+                    throwables.add(e)
                 }
             }
 
@@ -91,9 +89,12 @@ class Preference(annotation: PreferenceAnnotation, private val typeElement: Type
         }
 
         if (throwables.isEmpty()) {
-            return Either.right(typeSpec)
+            return typeSpec
         } else {
-            return Either.left(throwables)
+            throw PreferenceValidationException.TypeSpecBuildException(
+                    className = className,
+                    throwables = throwables
+            )
         }
     }
 
