@@ -50,17 +50,12 @@ jobs:
         with:
           path: ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-      - name: Set up gradle.properties for sigining and nexus
-        run: |
-          cat<<EOF > ~/.gradle/gradle.properties
-          NEXUS_USERNAME=jmatsu
-          NEXUS_PASSWORD=$NEXUS_PASSWORD
-          EOF
-        env:
-          NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
       - name: Publish artifacts
         run: |
-          ./gradlew publishToMavenLocal --stacktrace
+          ./gradlew publishReleaseToMavenRepository
         env:
+          ORG_GRADLE_PROJECT_nexusUsername: jmatsu
+          ORG_GRADLE_PROJECT_nexusPassword: ${{ secrets.NEXUS_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingRequired: true
           ORG_GRADLE_PROJECT_signingKey: ${{ secrets.GPG_SECRET_KEY }}
           ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.GPG_PASSPHRASE }}

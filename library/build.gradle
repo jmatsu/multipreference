@@ -67,18 +67,6 @@ artifacts {
     archives sourcesJar
 }
 
-def getRepositoryUsername() {
-    return hasProperty('nexusUsername') ? nexusUsername : ""
-}
-
-def getRepositoryPassword() {
-    return hasProperty('nextPassword') ? nextPassword : ""
-}
-
-def isRelease() {
-    return rootProject.ext.releaseVersion =~ /\d+\.\d+\.\d+/
-}
-
 def publicationVariants = ['release']
 
 android.libraryVariants.configureEach { variant ->
@@ -111,11 +99,11 @@ afterEvaluate {
     publishing {
         repositories {
             maven {
-                url = isRelease() ? "https://oss.sonatype.org/service/local/staging/deploy/maven2/" : "https://oss.sonatype.org/content/repositories/snapshots/"
+                url = repoUrl
 
                 credentials(PasswordCredentials) {
-                    username = getRepositoryUsername()
-                    password = getRepositoryPassword()
+                    username = repoUsername
+                    password = repoPassowrd
                 }
             }
         }

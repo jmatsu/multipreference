@@ -12,11 +12,11 @@ class MultipreferenceTest {
 
     @Test
     fun inMemory_should_returns_InMemoryDataStore() {
-        assertSame(InMemoryDataStore::class.java, Multipreference.inMemory().javaClass)
+        assertSame<Class<*>>(InMemoryDataStore::class.java, Multipreference.inMemory().javaClass)
     }
 
     @Test
     fun sharedPreferences_should_returns_SharedPreferencesDataStore() {
-        assertSame(SharedPreferencesDataStore::class.java, Multipreference.sharedPreferences(mock(Context::class.java), "dummy").javaClass)
+        assertSame<Class<*>>(SharedPreferencesDataStore::class.java, Multipreference.sharedPreferences(mock(Context::class.java), "dummy").javaClass)
     }
 }

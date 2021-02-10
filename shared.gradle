@@ -1,3 +1,6 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
 class AndroidConfig {
     def compileSdkVersion = 29
     def minSdkVersion = 16
@@ -25,11 +28,18 @@ ext {
     } else {
         releaseVersionCandidate = "0.1" + "-" + gitSha
     }
+    def versionFile = new File(rootDir, 'VERSION')
+    releaseVersion = (versionFile.exists() ? versionFile.text : releaseVersionCandidate).trim()
+    isRelease = releaseVersion =~ /\d+\.\d+\.\d+/
+
+    repoUrl = isRelease ? "https://oss.sonatype.org/service/local/staging/deploy/maven2/" : "https://oss.sonatype.org/content/repositories/snapshots/"
+    repoUsername = hasProperty('nexusUsername') ? nexusUsername : ""
+    repoPassowrd = hasProperty('nexusPassword') ? nexusPassword : ""
 }
 
 afterEvaluate {
     signing {
-        required { gradle.taskGraph.hasTask("publish") || gradle.taskGraph.hasTask("publishToMavenLocal") }
+        required { project.ext.isRelease && gradle.taskGraph.hasTask("publishReleaseToMavenRepository") || findProperty("signingRequired") == "true" }
 
         def signingKey = findProperty("signingKey")
         def signingPassword = findProperty("signingPassword")

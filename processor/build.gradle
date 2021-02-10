@@ -13,11 +13,6 @@ apply plugin: 'kotlin'
 
 apply plugin: 'org.junit.platform.gradle.plugin'
 
-ext {
-    artifactId = artifactConfig.processorArtifactId
-    displayName = artifactConfig.processorDisplayName
-}
-
 junitPlatform {
     filters {
         engines {
@@ -88,27 +83,15 @@ artifacts {
     archives sourcesJar
 }
 
-def getRepositoryUsername() {
-    return hasProperty('nexusUsername') ? nexusUsername : ""
-}
-
-def getRepositoryPassword() {
-    return hasProperty('nextPassword') ? nextPassword : ""
-}
-
-def isRelease() {
-    return rootProject.ext.releaseVersion =~ /\d+\.\d+\.\d+/
-}
-
 afterEvaluate {
     publishing {
         repositories {
             maven {
-                url = isRelease() ? "https://oss.sonatype.org/service/local/staging/deploy/maven2/" : "https://oss.sonatype.org/content/repositories/snapshots/"
+                url = repoUrl
 
                 credentials(PasswordCredentials) {
-                    username = getRepositoryUsername()
-                    password = getRepositoryPassword()
+                    username = repoUsername
+                    password = repoPassowrd
                 }
             }
         }
