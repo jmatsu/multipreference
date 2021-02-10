@@ -24,7 +24,7 @@ ext {
     def versionFile = new File(rootDir, 'VERSION')
     if (versionFile.exists()) {
         versionText = versionFile.text.trim()
-        isRelease = versionText =~ /^\d+\.\d+\.\d+$/
+        isRelease = (versionText =~ /^\d+\.\d+\.\d+$/).find()
         releaseVersion = isRelease ? versionText : "${versionText.split("-")[0]}-SNAPSHOT"
     } else {
         releaseVersion = "0.99.0"
