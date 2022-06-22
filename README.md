@@ -1,4 +1,8 @@
-# Multipreference
+# DEPREACTED: Multipreference
+
+This project has been deprecated and users should use androidx datastore. As the first step for the migration, you should move generated files of this libary to `src` and remove this library's depdenency because this library is just a boilerplate generator.
+
+---
 
 [ ![Download](https://img.shields.io/maven-central/v/com.github.jmatsu/multipreference) ](https://ossindex.sonatype.org/component/pkg:maven/com.github.jmatsu/multipreference) [![Build Status](https://github.com/jmatsu/multipreference/workflows/Build%20and%20Test/badge.svg)](https://github.com/jmatsu/multipreference/actions)
 
